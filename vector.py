@@ -76,18 +76,55 @@ class Vector(object):
             return rad
         else:
             return math.degrees(rad)
+    
+    # check if 2 vectors are Parallesim 
+#    def parallel(self, v):
+#        if self.magnitude() != 0 and v.magnitude() != 0:
+#            if self.unit() == v.unit():
+#                return True
+#            elif self.unit() == v.unit().scalar(-1):
+#                return True
+#            else:
+#                return False
+#        if self.magnitude()==0 or v.magnitude() ==0:
+#            return True
+    
+    # to deal with precision issue --> quite strange though
+    def is_zero(self, tolerance=1e-10):
+        return self.magnitude() < tolerance
+    
+    # check if 2 vectors are Parallel
+    def is_parallel_to(self, v):
+        return(self.is_zero() or v.is_zero() or self.angel(v, True) ==0 or
+               self.angel(v, True) == 180)
+    
+    
+    # check if 2 vectors are Orthogonal  (dot products == 0)
+    def orthogonal(self, v, tolerance = 1e-10):
+         # abs is bulit in fucntion for absolute value
+        if abs(self.inner_product(v)) < tolerance: 
+            return True
+        else:
+            return False
+                
 
 # test code
-vectorV1 = Vector([7.887, 4.138])
-vectorW1 = Vector([-8.802, 6.776])
-vectorV2 = Vector([-5.955, -4.904, -1.874])
-vectorW2 = Vector([-4.496, -8.755, 7.103])
-vectorV3 = Vector([3.183, -7.627])
-vectorW3 = Vector([-2.668, 5.319])
-vectorV4 = Vector([7.35, 0.221, 5.188])
-vectorW4 = Vector([2.751, 8.259, 3.985])
+vectorV1 = Vector([-7.579, -7.88])
+vectorW1 = Vector([22.737, 23.64])
+vectorV2 = Vector([-2.029, 9.97, 4.172])
+vectorW2 = Vector([-9.213, -6.639, -7.245])
+vectorV3 = Vector([-2.328, -7.284, -1.214])
+vectorW3 = Vector([-1.821, 1.072, -2.94])
+vectorV4 = Vector([2.118, 4.827])
+vectorW4 = Vector([0, 0])
 
-print(vectorV1.inner_product(vectorW1))
-print(vectorV2.inner_product(vectorW2))
-print(vectorV3.angel(vectorW3))
-print(vectorV4.angel(vectorW4, True))
+print(vectorV1.is_parallel_to(vectorW1))
+print(vectorV2.is_parallel_to(vectorW2))
+print(vectorV3.is_parallel_to(vectorW3))
+print(vectorV4.is_parallel_to(vectorW4))
+print(vectorV1.orthogonal(vectorW1))
+print(vectorV2.orthogonal(vectorW2))
+print(vectorV3.orthogonal(vectorW3))
+print(vectorV4.orthogonal(vectorW4))
+
+
