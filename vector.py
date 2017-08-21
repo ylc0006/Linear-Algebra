@@ -77,18 +77,6 @@ class Vector(object):
         else:
             return math.degrees(rad)
     
-    # check if 2 vectors are Parallesim 
-#    def parallel(self, v):
-#        if self.magnitude() != 0 and v.magnitude() != 0:
-#            if self.unit() == v.unit():
-#                return True
-#            elif self.unit() == v.unit().scalar(-1):
-#                return True
-#            else:
-#                return False
-#        if self.magnitude()==0 or v.magnitude() ==0:
-#            return True
-    
     # to deal with precision issue --> quite strange though
     def is_zero(self, tolerance=1e-10):
         return self.magnitude() < tolerance
@@ -106,25 +94,35 @@ class Vector(object):
             return True
         else:
             return False
-                
+        
+    # calculate vector projections
+    def vector_projections(self, baseVector):
+        baseUnitVector = baseVector.unit()
+        product_of_baseUnitVector_and_vector = self.inner_product(baseUnitVector)
+        
+        projection_vector = baseUnitVector.scalar(product_of_baseUnitVector_and_vector)
+        return projection_vector
+    
+    # calculate v perp
+    def vector_perp(self, baseVector):
+        projection_vector = self.vector_projections(baseVector)
+        prep_vector = self.minus(projection_vector)
+        return prep_vector
+        
+      
+              
 
 # test code
-vectorV1 = Vector([-7.579, -7.88])
-vectorW1 = Vector([22.737, 23.64])
-vectorV2 = Vector([-2.029, 9.97, 4.172])
-vectorW2 = Vector([-9.213, -6.639, -7.245])
-vectorV3 = Vector([-2.328, -7.284, -1.214])
-vectorW3 = Vector([-1.821, 1.072, -2.94])
-vectorV4 = Vector([2.118, 4.827])
-vectorW4 = Vector([0, 0])
+vectorV1 = Vector([3.039, 1.879])
+vectorB1 = Vector([0.825, 2.036])
+vectorV2 = Vector([-9.88, -3.264, -8.159])
+vectorB2 = Vector([-2.155, -9.353, -9.473])
+vectorV3 = Vector([3.009, -6.172, 3.692, -2.51])
+vectorB3 = Vector([6.404, -9.144, 2.759, 8.718])
 
-print(vectorV1.is_parallel_to(vectorW1))
-print(vectorV2.is_parallel_to(vectorW2))
-print(vectorV3.is_parallel_to(vectorW3))
-print(vectorV4.is_parallel_to(vectorW4))
-print(vectorV1.orthogonal(vectorW1))
-print(vectorV2.orthogonal(vectorW2))
-print(vectorV3.orthogonal(vectorW3))
-print(vectorV4.orthogonal(vectorW4))
+print(vectorV1.vector_projections(vectorB1))
+#print(vectorV2.vector_perp(vectorB2))
+#print(vectorV3.vector_projections(vectorB3))
+#print(vectorV3.vector_perp(vectorB3))
 
 
