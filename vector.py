@@ -95,8 +95,11 @@ class Vector(object):
         else:
             return False
         
-    # calculate vector projections
+    # calculate vector projections (or v parallel)
     def vector_projections(self, baseVector):
+        if baseVector.magnitude() ==0:
+            return "base vector can not be zero vector"
+            
         baseUnitVector = baseVector.unit()
         product_of_baseUnitVector_and_vector = self.inner_product(baseUnitVector)
         
@@ -105,24 +108,44 @@ class Vector(object):
     
     # calculate v perp
     def vector_perp(self, baseVector):
+        if baseVector.magnitude() ==0:
+            return "base vector can not be zero vector"
+        
         projection_vector = self.vector_projections(baseVector)
         prep_vector = self.minus(projection_vector)
         return prep_vector
-        
-      
-              
+    
+    # calculate cross products vector (only for vectors in 3 dimensions; 
+    #                                  or 2 dimenison w/ one dimension in zero)
+    def cross_product(self, v):
+        x_1, y_1, z_1 = self.coordinates
+        x_2, y_2, z_2 = v.coordinates
+        new_coordinates= [y_1*z_2 - y_2*z_1,  
+                          -(x_1*z_2 - x_2*z_1), 
+                          x_1*y_2 - x_2*y_1]        
+        return Vector(new_coordinates)
+    
+    
+    # calculate area of cross prdouct
+    def area_of_parallelogram_with(self, v):
+        cross_product_vector = self.cross_product(v)
+        return cross_product_vector.magnitude()
+    
+    # calculate area of triangle of cross product
+    def area_of_triangle_with(self, v):
+        return self.area_of_parallelogram_with(v) / Decimal(2.0)
+                 
 
 # test code
-vectorV1 = Vector([3.039, 1.879])
-vectorB1 = Vector([0.825, 2.036])
-vectorV2 = Vector([-9.88, -3.264, -8.159])
-vectorB2 = Vector([-2.155, -9.353, -9.473])
-vectorV3 = Vector([3.009, -6.172, 3.692, -2.51])
-vectorB3 = Vector([6.404, -9.144, 2.759, 8.718])
+vectorV1 = Vector([8.462, 7.893, -8.187])
+vectorW1 = Vector([6.984, -5.975, 4.778])
+vectorV2 = Vector([-8.987, -9.838, 5.031])
+vectorW2 = Vector([-4.268, -1.861, -8.866])
+vectorV3 = Vector([1.5, 9.547, 3.691])
+vectorW3 = Vector([-6.007, 0.124, 5.772])
 
-print(vectorV1.vector_projections(vectorB1))
-#print(vectorV2.vector_perp(vectorB2))
-#print(vectorV3.vector_projections(vectorB3))
-#print(vectorV3.vector_perp(vectorB3))
+print(vectorV1.cross_product(vectorW1))
+#print(vectorV2.area_of_parallelogram(vectorW2))
+#print(vectorV3.area_of_triangle_with(vectorW3))
 
 
