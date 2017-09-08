@@ -26,20 +26,23 @@ class LinearSystem(object):
 
 
     def swap_rows(self, row1, row2):
+        self[row1], self[row2] = self[row2], self[row1]
+        ''' 
         tempPlane = self[row1] 
         self[row1] = self[row2]
         self[row2] = tempPlane
+        '''
         
 
 
     def multiply_coefficient_and_row(self, coefficient, row):
-        new_vector = []
-        for item in self[row].normal_vector:
-            new_vector.append(item * coefficient)
-        self[row].normal_vector = new_vector
-        
+        n = self[row].normal_vector
+        new_normal_vector =[]
+        for item in n:
+            new_normal_vector.append(item * coefficient)
+      
         new_constant_term = self[row].constant_term * coefficient
-        self[row].constant_term = new_constant_term
+        self[row] = Plane(new_normal_vector, new_constant_term)
                       
 
     def add_multiple_times_row_to_row(self, coefficient, row_to_add, row_to_be_added_to):
@@ -104,7 +107,7 @@ class MyDecimal(Decimal):
         return abs(self) < eps
 
 
-
+'''
 # code for playing 
 p0 = Plane([1, 1, 1], 1)
 p1 = Plane([0, 1, 0], 2)
@@ -118,7 +121,58 @@ print (s.indices_of_first_nonzero_terms_in_each_row())
 print ('{},{},{},{}'.format(s[0],s[1],s[2],s[3]))
 print (len(s))
 print (s)
+'''
 
+# Test code
+p1 = Plane([1,1,1], constant_term=1)
+p2 = Plane([0,1,1], constant_term=2)
+s = LinearSystem([p1,p2])
+t = s.compute_triangular_form()
+if not (t[0] == p1 and
+        t[1] == p2):
+    print ('test case 1 failed')
+
+p1 = Plane([1,1,1], constant_term=1)
+p2 = Plane([1,1,1], constant_term=2)
+s = LinearSystem([p1,p2])
+t = s.compute_triangular_form()
+if not (t[0] == p1 and
+        t[1] == Plane(constant_term=1)):
+    print ('test case 2 failed')
+
+p1 = Plane([1,1,1], constant_term=1)
+p2 = Plane([0,1,0], constant_term=2)
+p3 = Plane([1,1,-1], constant_term=3)
+p4 = Plane([1,0,-2], constant_term=2)
+s = LinearSystem([p1,p2,p3,p4])
+t = s.compute_triangular_form()
+if not (t[0] == p1 and
+        t[1] == p2 and
+        t[2] == Plane(normal_vector=Vector([0,0,-2]), constant_term=2) and
+        t[3] == Plane()):
+    print ('test case 3 failed')
+
+p1 = Plane([0,1,1], constant_term=1)
+p2 = Plane([1,-1,1], constant_term=2)
+p3 = Plane([1,2,-5], constant_term=3)
+s = LinearSystem([p1,p2,p3])
+t = s.compute_triangular_form()
+if not (t[0] == Plane([1,-1,1], constant_term=2) and
+        t[1] == Plane([0,1,1], constant_term=1) and
+        t[2] == Plane([0,0,-9], constant_term=-2)):
+    print ('test case 4 failed')
+
+
+
+
+
+
+
+
+
+
+
+'''
 # Test swap code
 s.swap_rows(0,1)
 print('test case 1',s)
@@ -185,3 +239,4 @@ if not (s[0] == Plane([-10,-10,-10], constant_term=-10) and
         s[2] == Plane([-1,-1,1], constant_term=-3) and
         s[3] == p3):
     print ('test case 9 failed')
+'''
