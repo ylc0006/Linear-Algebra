@@ -33,7 +33,12 @@ class LinearSystem(object):
 
 
     def multiply_coefficient_and_row(self, coefficient, row):
-        pass # add your code here
+        new_vector = []
+        for item in s[row].normal_vector:
+            new_vector.append(item * coefficient)
+        s[row].normal_vector = new_vector
+            
+            
 
 
     def add_multiple_times_row_to_row(self, coefficient, row_to_add, row_to_be_added_to):
@@ -107,7 +112,7 @@ s.swap_rows(0,1)
 if not (s[0] == p1 and s[1] == p0 and s[2] == p2 and s[3] == p3):
     print ('test case 1 failed')
 else:
-    print('test okay')
+    print('test case 1 okay')
 
 s.swap_rows(1,3)
 if not (s[0] == p1 and s[1] == p3 and s[2] == p2 and s[3] == p0):
@@ -117,7 +122,7 @@ s.swap_rows(3,1)
 if not (s[0] == p1 and s[1] == p0 and s[2] == p2 and s[3] == p3):
     print ('test case 3 failed')
 
-'''
+
 s.multiply_coefficient_and_row(1,0)
 if not (s[0] == p1 and s[1] == p0 and s[2] == p2 and s[3] == p3):
     print ('test case 4 failed')
@@ -128,6 +133,8 @@ if not (s[0] == p1 and
         s[2] == Plane([-1,-1,1], constant_term=-3) and
         s[3] == p3):
     print ('test case 5 failed')
+else:
+    print ('test case 5 okay')
 
 s.multiply_coefficient_and_row(10,1)
 if not (s[0] == p1 and
@@ -136,6 +143,7 @@ if not (s[0] == p1 and
         s[3] == p3):
     print ('test case 6 failed')
 
+'''
 s.add_multiple_times_row_to_row(0,0,1)
 if not (s[0] == p1 and
         s[1] == Plane([10,10,10], constant_term=10) and
